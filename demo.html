@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html ng-app="SamDemo">
+<head>
+
+  <title>EGGHEAD demo</title>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.js"></script>
+  <script src ="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src ="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.3/lodash.js"></script>
+  <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"type="text/javascript"></script>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"type="text/javascript">
+
+  </script>
+  <script type="text/javascript" src="./demo.js"></script>
+  <link href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css" rel = "stylesheet" type = "text/css"/>
+  <link href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css" rel = "stylesheet" type = "text/css"/>
+  <link href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" rel = "stylesheet" type = "text/css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.44/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+  <link href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.44/css/bootstrap-datetimepicker.min.css" rel = "stylesheet" type = "text/css"/>
+</head>
+<body ng-controller = 'MainCtrl'>
+  <!-- category page -->
+  <div>
+    <!--list categories and clear currentCategory-->
+    <div class="input-group date">
+    <input type="text" class="form-control" value="12-02-2012">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div>
+    <div>
+      <div class="input-group input-medium date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years"></div>
+        <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="">
+        <input type="text" value="02-16-2012">
+      </div>
+        <!--clear currentCategory-->
+       <a href ='#' ng-click= "setCurrentCategory(null)">
+         <!--logo image -->
+         <img class =logo src="./eggly-logo.png" alt="logo">
+       </a>
+       <!--clear currentCategory end-->
+       <ul>  <!--categories list-->
+           <li ng-repeat = 'category in categories'> <!--categories item-->
+             <a herf ="#" ng-click="setCurrentCategory(category)">{{category.name}}</a>
+           </li>    <!--categories item end-->
+       </ul><!--categories list end-->
+    </div>
+    <!--list categories and clear currentCategory end-->
+
+    <!--list categories and clear currentCategory-->
+    <div>
+      <div ng-repeat= 'bookmark in bookmarks|filter:{category:currentCategory.name}'>
+        <button type = 'button' ng-click = 'deleteBookmark(bookmark)'>&times;</button>
+        <button type= 'button' ng-click= "setEditedBookmark(bookmark);startEditing();"><span class ="123>"</span></button>
+        <a href="{{bookmark.url}}">{{bookmark.title}}</a>
+      </div>
+      <!--Creating -->
+      <div ng-if='shouldShowCreating()'>
+        <button type = "button" ng-show ="!isCreating" ng-click= "startCreating()">StartCreating</button>
+        <span ng-show= "isCreating" class ="123">  Creat  bookmark!</span>
+
+        <!-- create newbookmark title -->
+        <form ng-show="isCreating" role = "form" ng-submit="createBookmark(newBookmark)" novalidate>
+          <!-- input newbookmark title -->
+          <div>
+            <label for = "newBookmarkTitle">Bookmark Title</label>
+            <input type = "text" id = 'newBookmarkTitle' ng-model = "newBookmark.title" placeholder = "Enter title">
+          </div>
+          <!-- input newbookmark title end-->
+          <!-- input newbookmark url -->
+          <div>
+            <label for = "newBookmarkURL">Bookmark URL</label>
+            <input type = 'text' id = "newBookmarkURL" ng-model = "newBookmark.url" placeholder=" Enter URL">
+          </div>
+          <!-- input newbookmark url end -->
+          <!-- create newBookmark -->
+          <button type = "submit"> Create </button>
+          <!-- input newbookmark end -->
+          <button type = "button" ng-click = "cancelCreating()">Cancel </button>
+        </form>
+        <!-- create newbookmark title end-->
+        <div ng-if= "isCreating">
+            Create A Bookmark!
+        </div>
+      </div>
+      <!--Editing -->
+      <div ng-show="shouldShowEditing()">
+          <h4> Editing {{editedBookmark.title}} </h4>
+          <form role = "form" ng-submit="updateBookmark(editedBookmark)" novalidate>
+            <!-- update editedBookmark title -->
+            <div>
+              <label>Bookmark Title</label>
+              <input type = "text"  ng-model = "editedBookmark.title" placeholder = "Enter title">
+            </div>
+            <!-- update editedBookmark title end-->
+            <!-- update editedBookmark url -->
+            <div>
+              <label>Bookmark URL</label>
+              <input type = 'text'  ng-model = "editedBookmark.url" placeholder=" Enter URL">
+            </div>
+            <!-- update editedBookmark url  end -->
+            <!-- save editedBookmark -->
+            <button type = "submit"> Save </button>
+            <!-- save editedBookmark end-->
+            <button type = "button" ng-click = "cancelEditing()">Cancel </button>
+          </form>
+      </div>
+    </div>
+    <!--list categories and clear currentCategory end-->
+  </div>
+  <!-- category page end -->
+</body>
